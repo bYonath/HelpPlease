@@ -4,45 +4,63 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.PWMMotorController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.revrobotics.*;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+// Constants import
+import frc.robot.Constants.MotorIDs;
 
 public class DT extends SubsystemBase {
   /** Creates a new DT. */
 
-  public PWMMotorController cont;
-  public CANSparkMax rightM1;
-  public CANSparkMax rightM2;
-  public CANSparkMax leftM1;
-  public CANSparkMax leftM2;
+  // Motor definitions
+  private final CANSparkMax rightFront;
+  private final CANSparkMax rightBack;
+  private final CANSparkMax leftFront;
+  private final CANSparkMax leftBack;
+
+  private final DifferentialDrive m_Drive;
 
   public DT() {
-    rightM1 = new CANSparkMax(0, MotorType.kBrushless);
-    rightM2 = new CANSparkMax(1, MotorType.kBrushless);
-    leftM1 = new CANSparkMax(2, MotorType.kBrushless);
-    leftM2 = new CANSparkMax(3, MotorType.kBrushless);
+    // Create motor objects
+    rightFront = new CANSparkMax(MotorIDs.k_RightFrontMotorPort, MotorType.kBrushless);
+    rightBack = new CANSparkMax(MotorIDs.k_RightBackMotorPort, MotorType.kBrushless);
+    leftFront = new CANSparkMax(MotorIDs.k_LeftFrontMotorPort, MotorType.kBrushless);
+    leftBack = new CANSparkMax(MotorIDs.k_LeftBackMotorPort, MotorType.kBrushless);
 
-    cont = new PWMMotorController("Yes?", 1) {
-      // is there something i have to put here?
-    };
+    // Invert output of left motors
+    leftFront.setInverted(true);
+    leftBack.setInverted(true); 
 
-    // still lost : P
-    rightM1.setInverted(true);
-    rightM2.setInverted(true);
+    // Group motor objects into Differential Drive
+    m_Drive = new DifferentialDrive(
+      (double output) -> {
+        rightFront.set(output);
+        rightBack.set(output);
+      }, 
+      (double output) -> 
+      {
+        leftFront.set(output);
+        leftBack.set(output);
+      }
+    );
+  }
+
+  // Drive method
+  public void arcadeDrive(double contX, double contY){
+      m_Drive.arcadeDrive(contX, contY);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    // something like this i suppose would work?
-    rightM1.set(1);
-    rightM2.set(1);
-    leftM1.set(-1);
-    leftM2.set(-1);
-    // even more lost : P
-
+    // Stops the motors?
+    System.out.println("Doing checks");
+    rightFront.set(0);
+    rightBack.set(0);
+    leftFront.set(0);
+    leftBack.set(0);
   }
 }
