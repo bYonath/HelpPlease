@@ -4,22 +4,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.PS4Controller;
+import edu.wpi.first.wpilibj.Timer;
 //import edu.wpi.first.wpilibj.XboxController; // In case we are using an xbox controller
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import frc.robot.subsystems.DT;
 import frc.robot.Robot;
 
 public class Drive extends Command {
   /** Creates a new Drive. */
   private final DT m_Drive;
-  private final PS4Controller dController;
+  private final CommandPS4Controller dController;
 
-  public Drive(DT m_Drive, PS4Controller dController) {
+  private double startTime;
+
+  Timer m_Timer = new Timer();
+
+  public Drive(DT m_Drive, CommandPS4Controller dController) {
     this.m_Drive = m_Drive;
     this.dController = dController;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.m_DriveDT);
+
+    m_Timer.start();
+    startTime = Timer.getFPGATimestamp();
   }
 
   // Called when the command is initially scheduled.
@@ -34,7 +42,10 @@ public class Drive extends Command {
     m_Drive.arcadeDrive(-dController.getLeftY(), dController.getRightX());
   }
   public void autoDrive(){
-    m_Drive.arcadeDrive(1, 1);
+
+    if(startTime - Timer.getFPGATimestamp() < 3){
+      m_Drive.arcadeDrive(1, 1);
+    }
   }
 
   // Called once the command ends or is interrupted.

@@ -5,31 +5,42 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
-import frc.robot.subsystems.Shooter;
-//import frc.robot.commands.Autos;
+import frc.robot.subsystems.DT;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandPS4Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+// Redundant Classes/Pkgs that could be added later:
+//import edu.wpi.first.wpilibj.PS4Controller.Axis;
+//import frc.robot.subsystems.Shooter;
+//import frc.robot.commands.Autos;
+
+/*
+This is where most of the Robot code is stored *You actually do not have to edit much of the
+Robot.java code : P
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  // Declaring Subsystems/Commands, 
+  //Im doing this so the declarations can be accessed later!
   private final Shoot m_Shoot;
-  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final Drive m_Drive;
+  private final DT s_Drive;
+
+  // Declare The Controller object
   private final CommandPS4Controller m_driverController =
       new CommandPS4Controller(OperatorConstants.kDriverControllerPort);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  // BOI THIS IS LITERALY A CONSTRUCTER WDYM IT STORES STUFF
   public RobotContainer() {
+    // Configure Subsystems
+    s_Drive = new DT();
     // Configure Commands
     m_Shoot = new Shoot();
+    m_Drive = new Drive(s_Drive, m_driverController);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -47,7 +58,7 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
     // Runs the "Shooter thing" *it just prints something when the triangle button is pressed
-    m_driverController.triangle().whileTrue(m_Shoot);
+    m_driverController.triangle().whileTrue(Commands.runOnce(()-> {m_Shoot.execute();}));
   }
 
   /**
@@ -57,6 +68,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return Commands.runOnce(()->{m_Drive.autoDrive();});
   }
 }

@@ -36,16 +36,14 @@ public class DT extends SubsystemBase {
 
     // Group motor objects into Differential Drive
     m_Drive = new DifferentialDrive(
-      (double output) -> {
-        rightFront.set(output);
-        rightBack.set(output);
-      }, 
+      // Sets the right motors
       (double output) -> 
-      {
-        leftFront.set(output);
-        leftBack.set(output);
-      }
-    );
+      {rightFront.set(output);
+      rightBack.set(output);}, 
+      // Sets the left motors
+      (double output) -> 
+      {leftFront.set(output);
+      leftBack.set(output);});
   }
 
   // Drive method
@@ -53,14 +51,25 @@ public class DT extends SubsystemBase {
       m_Drive.arcadeDrive(contX, contY);
   }
 
+  // This is most likely redundant?
+  public void resetMotors(){
+    m_Drive.tankDrive(0,0);
+  }
+
+  // Note to self: Figure out how to use Encoders :P
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     // Stops the motors?
     System.out.println("Doing checks");
+
+    /*
+    // Add these if nessecary
     rightFront.set(0);
     rightBack.set(0);
     leftFront.set(0);
     leftBack.set(0);
+     */
   }
 }
