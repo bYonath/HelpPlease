@@ -74,9 +74,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
+    // teleop starts running.
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -91,6 +89,9 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
+
+  // As it currently stands:
+  // YOUR SIMULATIONS ARE NO MATCH FOR ME RAHH!!!
 
   /** This function is called periodically during test mode. */
   @Override

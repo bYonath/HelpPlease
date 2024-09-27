@@ -26,6 +26,7 @@ public class Drive extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.m_DriveDT);
 
+    // If there is any more problems, imma comment this out
     m_Timer.start();
     startTime = Timer.getFPGATimestamp();
   }
@@ -42,7 +43,7 @@ public class Drive extends Command {
     m_Drive.arcadeDrive(-dController.getLeftY(), dController.getRightX());
   }
   public void autoDrive(){
-
+    // If this causes problems, comment it out
     if(startTime - Timer.getFPGATimestamp() < 3){
       m_Drive.arcadeDrive(1, 1);
     }

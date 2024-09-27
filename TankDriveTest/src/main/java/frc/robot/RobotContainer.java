@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+// UwU Importing ur stuff :)
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
@@ -28,7 +29,7 @@ public class RobotContainer {
   //Im doing this so the declarations can be accessed later!
   private final Shoot m_Shoot;
   private final Drive m_Drive;
-  private final DT s_Drive;
+  //private final DT s_Drive;
 
   // Declare The Controller object
   private final CommandPS4Controller m_driverController =
@@ -37,10 +38,10 @@ public class RobotContainer {
   // BOI THIS IS LITERALY A CONSTRUCTER WDYM IT STORES STUFF
   public RobotContainer() {
     // Configure Subsystems
-    s_Drive = new DT();
+    //s_Drive = new DT();
     // Configure Commands
     m_Shoot = new Shoot();
-    m_Drive = new Drive(s_Drive, m_driverController);
+    m_Drive = new Drive(Robot.m_DriveDT, m_driverController);
     // Configure the trigger bindings
     configureBindings();
   }

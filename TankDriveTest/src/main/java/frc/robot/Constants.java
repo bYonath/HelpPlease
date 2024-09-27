@@ -23,4 +23,12 @@ public final class Constants {
     public static final int k_LeftFrontMotorPort = 3;
     public static final int k_LeftBackMotorPort = 4;
   }
+  // Theoretical Arm Class Constants
+  public static class ArmIDs{
+    public static final String placeHolder = "Placeholder";
+  }
+  // Theoretical Shooter Class Constants
+  public static class ShootMechIDs{
+    public static final String placeHolder = "Placeholder";
+  }
 }
